@@ -18,7 +18,7 @@ if not TOKEN:
 DB_CONFIG = {
     "dbname": "bot_db",
     "user": "tbuser",
-    "password": "1q2w",
+    "password": "1234",
     "host": "localhost",  # или IP-адрес сервера БД
     "port": "5432"
 }
