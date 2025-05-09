@@ -23,11 +23,13 @@ jobs:
         # Обновление кода
         cd ~/bot
         git pull origin main
+        
 
         # Переключение на Docker Minikube
         eval $(minikube docker-env)
         
         # Сборка и применение манифестов
-        docker build -t telegram-bot:latest .
+        docker build -t telegram-bot:$(date +%s) .
+        kubectl -n my-bot-namespace set image deployment/telegram-bot bot=telegram-bot:$(date +%s)
         kubectl -n my-bot-namespace rollout restart deployment telegram-bot
         ENDSSH
