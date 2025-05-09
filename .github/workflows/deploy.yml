@@ -17,14 +17,19 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Pull code and redeploy
+    - name: Copy files to server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/telegram-bot"
+        rsync -avz -e ssh . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/telegram-bot
+
+    - name: Build and redeploy
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'ENDSSH'
-        # Переключаемся на Minikube
-        eval $(minikube docker-env)
-
-        # Переходим в папку с проектом
+        # Переходим в рабочую папку
         cd ~/telegram-bot
+
+        # Переключаемся на Docker Minikube
+        eval $(minikube docker-env)
 
         # Обновляем код
         git pull origin main
