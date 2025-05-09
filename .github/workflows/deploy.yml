@@ -36,4 +36,6 @@ jobs:
         # Перезапускаем Deployment
         kubectl -n my-bot-namespace set image deployment/telegram-bot bot=telegram-bot:latest
         kubectl -n my-bot-namespace rollout restart deployment telegram-bot
+        # Удалите все старые образы, кроме текущего
+        docker images | grep 'telegram-bot' | grep -v 'latest' | awk '{print $3}' | xargs --no-run-if-empty docker rmi
         ENDSSH
