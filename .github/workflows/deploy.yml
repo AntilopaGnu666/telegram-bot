@@ -17,19 +17,21 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Pull and redeploy on server
+    - name: Pull code and redeploy
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'ENDSSH'
-        # Обновление кода
-        cd ~/bot
-        git pull origin main
-        
-
-        # Переключение на Docker Minikube
+        # Переключаемся на Minikube
         eval $(minikube docker-env)
-        
-        # Сборка и применение манифестов
-        docker build -t telegram-bot:$(date +%s) .
-        kubectl -n my-bot-namespace set image deployment/telegram-bot bot=telegram-bot:$(date +%s)
+
+        # Переходим в папку с проектом
+        cd ~/telegram-bot
+
+        # Обновляем код
+        git pull origin main
+
+        # Собираем образ
+        docker build -t telegram-bot:latest .
+
+        # Перезапускаем Deployment
         kubectl -n my-bot-namespace rollout restart deployment telegram-bot
         ENDSSH
