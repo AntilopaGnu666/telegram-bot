@@ -24,7 +24,7 @@ jobs:
         eval $(minikube docker-env)
 
         # Переходим в папку с проектом
-        cd ~/bot
+        cd ~/telegram-bot
 
         # Обновляем код
         git pull origin main
