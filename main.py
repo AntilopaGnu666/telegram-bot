@@ -34,7 +34,7 @@ def connect_db():
 
 # Обработчик команды /start
 def start(update, context):
-    update.message.reply_text("Привет, '{username}'! Я сохраню все твои сообщения в базу данных.")
+    update.message.reply_text("Привет! Я сохраню все твои сообщения в базу данных.")
 
 # Обработчик текстовых сообщений
 def connect_db():
@@ -66,7 +66,7 @@ def save_message(update, context):
             conn.close()
 
     # Ответ пользователю
-    update.message.reply_text(f"Сообщение сохранено: {message}")
+    update.message.reply_text(f"Сообщение ало: {message}")
 
 # Основная функция
 def main():
