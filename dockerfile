@@ -2,7 +2,7 @@
 FROM python:3.10-slim
 
 # Рабочая директория
-WORKDIR /app
+WORKDIR ~/telegram-bot
 
 # Установка системных зависимостей
 RUN apt-get update && \
