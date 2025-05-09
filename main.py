@@ -66,7 +66,7 @@ def save_message(update, context):
             conn.close()
 
     # Ответ пользователю
-    update.message.reply_text(f"Сообщение ало: {message}")
+    update.message.reply_text(f"Сообщение сохранено: {message}")
 
 # Основная функция
 def main():
