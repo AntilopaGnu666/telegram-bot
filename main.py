@@ -15,21 +15,29 @@ if not TOKEN:
 # Остальной код бота (как в предыдущем примере)
 # ...
 
+# Получите параметры из .env
 DB_CONFIG = {
-    "dbname": "bot_db",
-    "user": "tbuser",
-    "password": "1234",
-    "host": "localhost",  # или IP-адрес сервера БД
-    "port": "5432"
+    "dbname": os.getenv("DB_NAME"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "host": os.getenv("DB_HOST"),
+    "port": os.getenv("DB_PORT", "5432")  # Значение по умолчанию
 }
+
+# Проверка: все ли переменные загружены
+if not all(DB_CONFIG.values()):
+    raise ValueError("Не все переменные окружения для БД установлены!")
 
 # Функция для подключения к БД
 def connect_db():
+    print("🔌 Подключение к БД...")
     try:
+        print("🔌 Подключение к БД с параметрами:", DB_CONFIG)
         conn = psycopg2.connect(**DB_CONFIG)
+        print("✅ Успешное подключение к БД")
         return conn
     except Exception as e:
-        print(f"Ошибка подключения к БД: {e}")
+        print(f"❌ Ошибка подключения к БД: {e}")
         return None
 
 # Обработчик команды /start
@@ -49,6 +57,7 @@ def connect_db():
 def save_message(update, context):
     username = update.message.from_user.username
     message = update.message.text
+    print(f"📩 Получено сообщение: {username} -> {message}")
 
     conn = connect_db()
     if conn:
